@@ -1,5 +1,5 @@
 export class Numeronym {
-  public exec(numberList: number[]): string {
+  public static readonly exec = (numberList: number[]): string => {
     const sortedNumberList = numberList.sort((current, next) => current - next)
 
     if (1 === sortedNumberList.length) {

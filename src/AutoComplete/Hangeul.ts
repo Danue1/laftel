@@ -33,40 +33,16 @@ const CHO_TABLE = {
 
 const HANGEUL_OFFSET = 0xac00
 
-export class AutoComplete {
-  public searchByKeyword(statement: string, keyword: string) {
-    const wordList = statement.match(/[가-힣]+/g)
-    if (!wordList) {
-      return false
-    }
-
-    const resultStack = []
-    const keywordLetterList = this.separateWord(keyword)
-
-    for (const word of wordList) {
-      const letterList = this.separateWord(word)
-      const isMatchedWord = !keywordLetterList.some((letter, index) => {
-        const targetLetter = letterList[index]
-        return targetLetter !== letter
-      })
-
-      if (isMatchedWord) {
-        resultStack.push(word)
-      }
-    }
-
-    return resultStack
-  }
-
-  private separateWord(word: string): string[] {
+export class Hangeul {
+  public static readonly separateWord = (word: string): string[] => {
     return Array.prototype.reduce.call(
       word,
-      (result: string[], char: string): string[] => result.concat(this.separateChar(char)),
+      (result: string[], char: string): string[] => result.concat(Hangeul.separateChar(char)),
       []
     )
   }
 
-  private separateChar(char: string): string[] {
+  private static readonly separateChar = (char: string): string[] => {
     const choPredicted = LETTER.CHO[CHO_TABLE[char]]
     const isCho = !!choPredicted
     if (isCho) {

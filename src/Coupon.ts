@@ -1,25 +1,26 @@
 import * as Crypto from 'crypto'
 
 export class Coupon {
-  private readonly couponList: string[] = []
+  public static readonly isGenerated = (couponList: string[], coupon: string): boolean => {
+    return couponList.includes(coupon)
+  }
 
-  public generateByCount(count: number): string[] {
+  public static readonly generateByCount = (count: number): string[] => {
+    const couponList: string[] = []
+    let coupon: string
+
     for (let index = 0; index < count; index += 1) {
-      let coupon: string
       do {
-        coupon = this.generateCoupon()
-      } while (this.isGeneratedCoupon(coupon))
-      this.couponList.push(coupon)
+        coupon = Coupon.generate()
+      } while (Coupon.isGenerated(couponList, coupon))
+
+      couponList.push(coupon)
     }
 
-    return this.couponList
+    return couponList
   }
 
-  private generateCoupon(): string {
+  public static readonly generate = (): string => {
     return Crypto.randomBytes(10).toString('hex')
-  }
-
-  public isGeneratedCoupon(coupon: string): boolean {
-    return this.couponList.includes(coupon)
   }
 }
